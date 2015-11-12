@@ -32,6 +32,12 @@
 			<input type="text" name="max_entries" value="<?=$form["max_entries"]?>" />
 		</div>
 	</fieldset>
+    <fieldset>
+        <div id="form_builder_save_progress">
+            <input type="checkbox" name="save_progress" id="form_builder_save_progress"<? if ($form["save_progress"]) { ?> checked="checked"<? } ?> />
+            <label>Allow user to save progress and return</label>
+        </div>
+    </fieldset>
 	<? if (!empty($settings["accept_payments"])) { ?>
 	<fieldset>
 		<div class="form_builder_triplets">

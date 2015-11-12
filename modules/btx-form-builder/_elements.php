@@ -1,6 +1,7 @@
 <h4>Formatting</h4>
 <a href="#" class="section" name="section"><span></span>Section Break</a>
 <a href="#" class="columns" name="columns"><span></span>Columns</a>
+<a href="#" class="page-break" name="page-break"><span></span>Page Break</a>
 <h4>Standard</h4>
 <a href="#" class="text" name="text"><span></span>Single Line Text</a>
 <a href="#" class="textarea" name="textarea"><span></span>Paragraph Text</a>

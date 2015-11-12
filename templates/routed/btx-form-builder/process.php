@@ -1,4 +1,5 @@
 <?
+
 	$storage = new BigTreeStorage;
 	$total = 0;
 	$email = "";
@@ -68,8 +69,8 @@
 		BigTree::redirect($page_link);
 	}
 	
-	// If it's paid, let's try to charge them.
-	if ($form["paid"]) {
+	// If it's paid and we are not just saving our progress, let's try to charge them.
+	if ($form["paid"] && $_POST["formActionType"] == "submit") {
 		$pg = new BigTreePaymentGateway;
 		$transaction = $pg->charge(round($total,2),0,implode(" ",$_POST["fb_cc_billing_name"]),$_POST["fb_cc_card"]["number"],$_POST["fb_cc_card"]["month"].$_POST["fb_cc_card"]["year"],$_POST["fb_cc_card"]["code"],$_POST["fb_cc_billing_address"],($page_header ? $page_header : $bigtree["page"]["nav_title"]),$_POST["fb_cc_billing_email"]);
 		if (!$transaction) {
@@ -130,12 +131,20 @@
 
 '.$email;
 
-	// Send out email alerts
-	$emails = explode(",",$emails);
-	foreach ($emails as $e) {
-		$e = trim($e);
-		mail($e,$email_title." - Form Submission",$email,"From: no-reply@$no_reply_domain");
-	}
+	// Send out email alerts if we are not just saving the form
+    if ($_POST["formActionType"] == "submit") {
+        $emails = explode(",",$emails);
+        foreach ($emails as $e) {
+            $e = trim($e);
+            mail($e,$email_title." - Form Submission",$email,"From: no-reply@$no_reply_domain");
+        }
+
+	    BigTree::redirect($page_link."thanks/");
+    }
+    else {
+        // TODO: save data
+
+        BigTree::redirect($page_link."saved/");
+    }
 	
-	BigTree::redirect($page_link."thanks/");
 ?>

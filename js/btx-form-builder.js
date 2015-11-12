@@ -256,6 +256,12 @@ var BTXFormBuilder = (function() {
 			object_data = { title: "Section Title", description: "Section Description" };
 		}
 		
+        if (type == "page-break") {
+			html += '<span class="icon"></span>' +
+					'<div class="form_builder_object form_builder_page_break_title">Page Break</div>'
+			object_data = { title: "Page Break", description: "" };
+        }
+
 		if (type == "text") {
 			html += '<span class="icon"></span>' + 
 					'<label>Label</label>' +

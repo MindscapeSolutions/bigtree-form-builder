@@ -1,4 +1,17 @@
 <link rel="stylesheet" href="<?=STATIC_ROOT?>extensions/com.fastspot.form-builder/css/front-end.css" />
+
+<?
+if (!empty($form["save_progress"]) && empty($_SESSION["public-user-id"])) {
+?>
+    <h1>Sign In Required</h1>
+    <div>
+        This form is meant to be used only when you are logged in so that your progress may be saved. Please log in now.
+    </div>
+<?
+    die;
+}
+?>
+
 <h1><?=$page_header?></h1>
 <?=$page_content?>	
 <?
@@ -9,7 +22,8 @@
 <?	
 	} else {
 ?>
-<form method="post" action="<?=$page_link?>process/" enctype="multipart/form-data" class="form_builder">
+<form id="formBuilderForm" method="post" action="<?=$page_link?>process/" enctype="multipart/form-data" class="form_builder">
+    <input id="formActionType" name="formActionType" type="hidden" />
 	<?
 		$error_count = count($_SESSION["form_builder"]["errors"]);
 		if ($error_count) {
@@ -103,7 +117,18 @@
 			$last_field = $t;
 		}
 	?>
-	<input type="submit" class="form_builder_submit" value="Submit" />
+
+    <?
+    if (!empty($form["save_progress"])) {
+    ?>
+	<input id="saveForm" type="button" class="save form_builder_submit" value="Save & Exit" />
+    <?
+    }
+    ?>
+
+    <br />
+	<input id="submitForm" type="button" class="submit form_builder_submit" value="Submit" />
+
 </form>
 <?
 		// Make the price watchers
@@ -211,6 +236,7 @@
 
 		window.addEventListener("load",function() {
 			var element;
+
 			<?
 				// Get all the fields that affect price and get our initial total
 				foreach ($text_watch as $id) {
@@ -259,6 +285,7 @@
 				}
 			?>
 			document.getElementById("form_builder_total").innerHTML = formatMoney(Total);
+
 		});
 	})();
 </script>
@@ -270,3 +297,23 @@
 		unset($_SESSION["form_builder"]["fields"]);
 	}
 ?>
+
+<script type="text/javascript">
+    element = document.getElementById("submitForm");
+    element.onclick = function() {
+        hiddenElement = document.getElementById("formActionType");
+        hiddenElement.setAttribute('value', 'submit');
+
+        formElement = document.getElementById("formBuilderForm");
+        formElement.submit();
+    };
+
+    element = document.getElementById("saveForm");
+    element.onclick = function() {
+        hiddenElement = document.getElementById("formActionType");
+        hiddenElement.setAttribute('value', 'save');
+
+        formElement = document.getElementById("formBuilderForm");
+        formElement.submit();
+    };
+</script>
