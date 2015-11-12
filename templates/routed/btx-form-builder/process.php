@@ -115,9 +115,42 @@
 	// Get rid of saved data or errors.	
 	unset($_SESSION["form_builder"]);
 
-	// Add the entry to the entries table.
-	BigTreeAutoModule::createItem("btx_form_builder_entries",array("form" => $form["id"],"data" => $entry,"created_at" => "NOW()"));
+    $publicUserExtension = BigTreeAdmin::getExtension('com.mindscapesolutions.public-user');
+    $newEntry = false;
+    if (empty($publicUserExtension)) {
+        $newEntry = true;
+    }
+    else {
+        if (!empty($form["save_progress"])) {
+            // check if the user has previously saved this form
+            $checkEntry = BTXFormBuilder::getLatestEntryForPublicUser($form['id'], $_SESSION['public-user-id']);
+
+            if (empty($checkEntry)) {
+                $newEntry = true;
+            }
+            else {
+                $newData = array();
+                foreach ($form['fields'] as $fCounter => $field) {
+                    $fData = json_decode($field['data']);
+                    if (isset($_POST[$fData->name])) {
+                        $newData[$fData->id] = $_POST[$fData->name];
+                    }
+                }
+
+                $newData = json_encode($newData);
+                BigTreeAutoModule::updateItem("btx_form_builder_entries", $checkEntry['id'], array('data' => $newData));
+            }
+        }
+        else {
+            $newEntry = true;
+        }
+    }
 	
+    if ($newEntry) {
+        // Add the entry to the entries table.
+        BigTreeAutoModule::createItem("btx_form_builder_entries",array("form" => $form["id"],"data" => $entry,"created_at" => "NOW()","public_user_id" => $_SESSION["public-user-id"]));
+    }
+
 	// Update the totals for the form and recache it.
 	sqlquery("UPDATE btx_form_builder_forms SET entries = (entries + 1), last_entry = NOW(), total_collected = (total_collected + ".round($total,2).") WHERE id = '".$form["id"]."'");	
 	BigTreeAutoModule::recacheItem($form["id"],"btx_form_builder_forms");
@@ -131,7 +164,7 @@
 
 '.$email;
 
-	// Send out email alerts if we are not just saving the form
+	// Send out email alerts if we are actually submitting the form and not just saving it
     if ($_POST["formActionType"] == "submit") {
         $emails = explode(",",$emails);
         foreach ($emails as $e) {
@@ -142,8 +175,6 @@
 	    BigTree::redirect($page_link."thanks/");
     }
     else {
-        // TODO: save data
-
         BigTree::redirect($page_link."saved/");
     }
 	

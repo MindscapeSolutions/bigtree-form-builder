@@ -8,10 +8,35 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && empty($_SE
 ?>
     <h1>Sign In Required</h1>
     <div>
-        This form is meant to be used only when you are logged in so that your progress may be saved. Please log in now.
+        This form is meant to be used only when you are logged in so that your progress may be saved.
+
+<?
+    $loginPage = BigTreeAdmin::getSetting('public-user-login-page')['value'];
+    if (empty($loginPage)) {
+?>
+        <div>
+            A login page has not been defined. Please contact the system administrator.
+        </div>
+<?
+    }
+    else {
+?>
+        &nbsp;<a href="<?= $loginPage ?>">Please log in</a>.
+<?
+    }
+?>
+
     </div>
 <?
     die;
+}
+?>
+
+<?
+// load the data the user saved earlier if they have any
+$storedEntry = null;
+if (!empty($publicUserExtension) && !empty($form["save_progress"]) && !empty($_SESSION["public-user-id"])) {
+    $storedEntry = BTXFormBuilder::getLatestEntryForPublicUser($form['id'], $_SESSION['public-user-id']);
 }
 ?>
 
@@ -27,6 +52,7 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && empty($_SE
 ?>
 <form id="formBuilderForm" method="post" action="<?=$page_link?>process/" enctype="multipart/form-data" class="form_builder">
     <input id="formActionType" name="formActionType" type="hidden" />
+    <input id="storedData" name="storedData" type="hidden" value="<? if (!empty($storedEntry)) { echo json_encode($storedEntry['data']); } else { echo ''; } ?>" />
 	<?
 		$error_count = count($_SESSION["form_builder"]["errors"]);
 		if ($error_count) {
@@ -61,6 +87,7 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && empty($_SE
 
 		$last_field = false;
 		$count = 0;
+
 		foreach ($form["fields"] as $field) {
 			$count++;
 			$t = $field["type"];
@@ -85,6 +112,8 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && empty($_SE
 				if (is_array($_SESSION["form_builder"]["errors"]) && in_array($field_name,$_SESSION["form_builder"]["errors"])) {
 					$error = true;
 				}
+
+                $fieldData = $storedEntry['data'][$field['id']];
 				include "field-types/draw/$t.php";
 			} else {
 				if ($last_field == "column") {

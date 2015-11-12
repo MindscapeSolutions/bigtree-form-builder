@@ -14,7 +14,7 @@
 		<span class="form_builder_required_star">*</span>
 		<? } ?>
 	</label>
-	<input type="text" id="form_builder_field_<?=$count?>" name="<?=$field_name?>" class="<?=implode(" ",$classes)?>" value="<?=htmlspecialchars($default)?>" placeholder="<?=htmlspecialchars($d["placeholder"])?>" <? if (intval($d["maxlength"])) { ?>maxlength="<?=intval($d["maxlength"])?>" <? } ?>/>
+	<input type="text" id="form_builder_field_<?=$count?>" name="<?=$field_name?>" class="<?=implode(" ",$classes)?>" value="<? if (empty($fieldData)) { echo htmlspecialchars($default); } else { echo htmlspecialchars($fieldData); } ?>" placeholder="<?=htmlspecialchars($d["placeholder"])?>" <? if (intval($d["maxlength"])) { ?>maxlength="<?=intval($d["maxlength"])?>" <? } ?>/>
 </fieldset>
 <?
 	if ($form["paid"] && $d["price"] == "on") {

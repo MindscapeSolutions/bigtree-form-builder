@@ -113,6 +113,31 @@
 			return $mod->get($id);
 		}
 
+        /*
+            Function: getLatestEntryForPublicUser
+                Gets an entry record for a specified form and public user
+
+            Parameters:
+                $formId - Form ID
+                $publicUserId - Public User ID
+
+            Returns:
+                A form entry record
+        */
+        static function getLatestEntryForPublicUser($formId, $publicUserId) {
+			$mod = new BigTreeModule("btx_form_builder_entries");
+            $results = $mod->getMatching(array('form', 'public_user_id'), array(intval($formId), intval($publicUserId)), 'created_at desc', 1);
+
+            // get the lastest entry for this form and user (just in case there is more than one, which there shouldn't be)
+            $entry = null;
+            foreach ($results as $rCounter => $record) {
+                $entry = $record;
+                break;
+            }
+
+            return $entry;
+        }
+
 		/*
 			Function: searchEntries
 				Searches a form's entries and returns a page of 15 ordered by most recent first.
