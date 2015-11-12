@@ -35,7 +35,7 @@
     <fieldset>
         <div id="form_builder_save_progress">
             <input type="checkbox" name="save_progress" id="form_builder_save_progress"<? if ($form["save_progress"]) { ?> checked="checked"<? } ?> />
-            <label>Allow user to save progress and return</label>
+            <label>Allow user to save progress and return <em>(You must have the bigtree-public-user extension installed for this to be of use.)</em></label>
         </div>
     </fieldset>
 	<? if (!empty($settings["accept_payments"])) { ?>

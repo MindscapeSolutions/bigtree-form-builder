@@ -1,7 +1,10 @@
 <link rel="stylesheet" href="<?=STATIC_ROOT?>extensions/com.fastspot.form-builder/css/front-end.css" />
 
 <?
-if (!empty($form["save_progress"]) && empty($_SESSION["public-user-id"])) {
+// check if the public user extension is installed
+$publicUserExtension = BigTreeAdmin::getExtension('com.mindscapesolutions.public-user');
+
+if (!empty($publicUserExtension) && !empty($form["save_progress"]) && empty($_SESSION["public-user-id"])) {
 ?>
     <h1>Sign In Required</h1>
     <div>
@@ -119,14 +122,23 @@ if (!empty($form["save_progress"]) && empty($_SESSION["public-user-id"])) {
 	?>
 
     <?
-    if (!empty($form["save_progress"])) {
+    if (!empty($publicUserExtension) && !empty($form["save_progress"]) && !empty($_SESSION['public-user-id'])) {
     ?>
 	<input id="saveForm" type="button" class="save form_builder_submit" value="Save & Exit" />
     <?
     }
     ?>
 
+    <?
+    if (!empty($publicUserExtension) && !empty($form["save_progress"]) && empty($_SESSION['public-user-id'])) {
+    ?>
+	<div>Your session has timed out so you will not be able to save your progress. Please click the Submit button instead.</div>
+    <?
+    }
+    ?>
+
     <br />
+
 	<input id="submitForm" type="button" class="submit form_builder_submit" value="Submit" />
 
 </form>
@@ -309,11 +321,13 @@ if (!empty($form["save_progress"]) && empty($_SESSION["public-user-id"])) {
     };
 
     element = document.getElementById("saveForm");
-    element.onclick = function() {
-        hiddenElement = document.getElementById("formActionType");
-        hiddenElement.setAttribute('value', 'save');
+    if (element != null) {
+        element.onclick = function() {
+            hiddenElement = document.getElementById("formActionType");
+            hiddenElement.setAttribute('value', 'save');
 
-        formElement = document.getElementById("formBuilderForm");
-        formElement.submit();
-    };
+            formElement = document.getElementById("formBuilderForm");
+            formElement.submit();
+        };
+    }
 </script>
