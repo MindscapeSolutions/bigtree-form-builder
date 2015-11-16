@@ -10,11 +10,12 @@
 	</label>
 	<?
 		}
-		
+
 		foreach ($d["list"] as $item) {
+
 	?>
 	<div class="form_builder_radio">
-		<input type="radio" id="form_builder_field_<?=$count?>" name="<?=$field_name?>" value="<?=htmlspecialchars($item["value"])?>" <? if ($default == $item["value"] || ($default === false && $item["selected"])) { ?>checked="checked" <? } ?> data-price="<?=$item["price"]?>" />
+		<input type="radio" id="form_builder_field_<?=$count?>" name="<?=$field_name?>" value="<?=htmlspecialchars($item["value"])?>" <? if (empty($fieldData)) { if ($default == $item["value"] || ($default === false && $item["selected"])) { ?>checked="checked" <? } } else { if ($fieldData == $item["value"]) { ?> checked="checked" <? } } ?> data-price="<?=$item["price"]?>" />
 		<label class="form_builder_for_checkbox" for="form_builder_field_<?=$count?>"><?=htmlspecialchars($item["description"])?></label>
 	</div>
 	<?

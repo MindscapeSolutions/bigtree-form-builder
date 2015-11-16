@@ -17,5 +17,5 @@
 		<span class="form_builder_required_star">*</span>
 		<? } ?>
 	</label>
-	<textarea id="form_builder_field_<?=$count?>" name="<?=$field_name?>"<? if (count($classes)) { ?> class="<?=implode(" ",$classes)?>"<? } ?> placeholder="<?=htmlspecialchars($d["placeholder"])?>"><?=htmlspecialchars($default)?></textarea>
+	<textarea id="form_builder_field_<?=$count?>" name="<?=$field_name?>"<? if (count($classes)) { ?> class="<?=implode(" ",$classes)?>"<? } ?> placeholder="<?=htmlspecialchars($d["placeholder"])?>"><? if (empty($fieldData)) { echo htmlspecialchars($default); } else { echo htmlspecialchars($fieldData); } ?></textarea>
 </fieldset>

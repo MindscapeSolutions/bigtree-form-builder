@@ -10,12 +10,12 @@
 	</label>
 	<?
 		}
-		
+
 		foreach ($d["list"] as $item) {
 			$value = $item["value"] ? htmlspecialchars($item["value"]) : htmlspecialchars($item["description"]);
 	?>
 	<div class="form_builder_checkbox">
-		<input type="checkbox" id="form_builder_field_<?=$count?>" name="<?=$field_name?><? if (count($d["list"]) > 1) { ?>[]<? } ?>" value="<?=$value?>"<? if ((is_array($default) && in_array($value,$default)) || ($default === false && $item["selected"])) { ?> checked="checked"<? } ?> data-price="<?=$item["price"]?>" /> 
+		<input type="checkbox" id="form_builder_field_<?=$count?>" name="<?=$field_name?><? if (count($d["list"]) > 1) { ?>[]<? } ?>" value="<?=$value?>"<? if (empty($fieldData)) { if ((is_array($default) && in_array($value,$default)) || ($default === false && $item["selected"])) { ?> checked="checked"<? } } else { if (in_array($value, $fieldData)) { ?> checked="checked" <? } } ?> data-price="<?=$item["price"]?>" /> 
 		<label class="form_builder_for_checkbox" for="form_builder_field_<?=$count?>"><?=htmlspecialchars($item["description"])?><? if ($d["required"] && !$d["label"]) { ?><span class="form_builder_required_star">*</span><? } ?></label>
 	</div>
 	<?	
