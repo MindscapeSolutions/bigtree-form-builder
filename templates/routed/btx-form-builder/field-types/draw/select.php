@@ -7,7 +7,7 @@
 	</label>
 	<select id="form_builder_field_<?=$count?>" name="<?=$field_name?>"<? if ($d["required"]) { ?> class="form_builder_required<? if ($error) { ?> form_builder_error<? } ?>"<? } ?>>
 		<? foreach ($d["list"] as $item) { ?>
-		<option value="<?=htmlspecialchars($item["value"])?>"<? if ($item["value"] == $default || ($default === false && $item["selected"])) { ?> selected="selected"<? } ?> data-price="<?=$item["price"]?>"><?=htmlspecialchars($item["description"])?></option>
+		<option value="<?=htmlspecialchars($item["value"])?>"<? if (empty($fieldData)) { if ($item["value"] == $default || ($default === false && $item["selected"])) { ?> selected="selected"<? } } else { if ($fieldData == $item["value"]) { ?> selected="selected" <? } } ?> data-price="<?=$item["price"]?>"><?=htmlspecialchars($item["description"])?></option>
 		<? } ?>
 	</select>
 </fieldset>

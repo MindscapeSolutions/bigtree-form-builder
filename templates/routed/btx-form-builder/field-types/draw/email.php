@@ -14,5 +14,5 @@
 		<span class="form_builder_required_star">*</span>
 		<? } ?>
 	</label>
-	<input type="text" id="form_builder_field_<?=$count?>" name="<?=$field_name?>" class="<?=implode(" ",$classes)?>" value="<?=htmlspecialchars($default)?>" />
+	<input type="text" id="form_builder_field_<?=$count?>" name="<?=$field_name?>" class="<?=implode(" ",$classes)?>" value="<? if (empty($fieldData)) { echo htmlspecialchars($default); } else { echo htmlspecialchars($fieldData); } ?>" />
 </fieldset>

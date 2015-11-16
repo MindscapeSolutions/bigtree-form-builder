@@ -142,6 +142,7 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && !empty($_S
 					if (is_array($_SESSION["form_builder"]["errors"]) && in_array($field_name,$_SESSION["form_builder"]["errors"])) {
 						$error = true;
 					}
+                    $fieldData = $storedEntry['data'][$field['id']];
 					include "field-types/draw/".$subfield["type"].".php";
 				}
 				echo '</div>';

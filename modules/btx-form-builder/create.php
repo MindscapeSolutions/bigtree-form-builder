@@ -44,7 +44,40 @@
 				$alignment = "";
 			}
 		} elseif ($type) {
-			BigTreeAutoModule::createItem("btx_form_builder_fields",array("form" => $form,"column" => $column,"alignment" => $alignment,"type" => $type,"data" => $_POST["data"][$key],"position" => $position));
+			$newId = BigTreeAutoModule::createItem("btx_form_builder_fields",array("form" => $form,"column" => $column,"alignment" => $alignment,"type" => $type,"data" => $_POST["data"][$key],"position" => $position));
+
+            // we need to save the extra field data immediately so the "save progress" forms can use it
+            //
+            // get the current data
+            $mData = json_decode($_POST["data"][$key]);
+
+            // set the new id and type
+            $mData->id = $newId;
+            $mData->type = $type;
+
+            // generate the name of the field
+            $fieldResults = sqlquery("select * from btx_form_builder_fields where form = " . $form);
+            $namesUsed = array();
+            while ($f = sqlfetch($fieldResults)) {
+                $rData = json_decode($f['data']);
+                if (isset($rData->name)) {
+                    $namesUsed[] = $rData->name;
+                }
+            }
+
+            $nameCreated = false;
+            $nameCounter = 0;
+            while (!$nameCreated) {
+                if (!in_array('form_builder_element_' . $nameCounter, $namesUsed)) {
+                    $mData->name = 'form_builder_element_' . $nameCounter;
+                    $nameCreated = true;
+                }
+                else {
+                    $nameCounter++;
+                }
+            }
+
+            $updateResult = sqlquery("update btx_form_builder_fields set data = '" . json_encode($mData) . "' where id = " . $newId);
 		}
 		$position--;
 	}
