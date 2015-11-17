@@ -11,7 +11,7 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && empty($_SE
         This form is meant to be used only when you are logged in so that your progress may be saved.
 
 <?
-    $loginPage = BigTreeAdmin::getSetting('public-user-login-page')['value'];
+    $loginPage = BigTreeAdmin::getSetting('com.mindscapesolutions.public-user*public-user-login-page')['value'];
     if (empty($loginPage)) {
 ?>
         <div>
