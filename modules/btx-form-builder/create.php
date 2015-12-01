@@ -20,7 +20,8 @@
 		"early_bird_date" => $early_bird_date,
 		"limit_entries" => $limit_entries,
 		"max_entries" => $max_entries,
-        "save_progress" => $save_progress
+        "save_progress" => $save_progress,
+        "layout" => $layout
 	));
 	
 	// Setup the default column, sort position, alignment inside columns.

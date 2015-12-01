@@ -1,3 +1,11 @@
+<?
+if (!empty($form["layout"])) {
+    if (file_exists(SERVER_ROOT . "templates/layouts/" . $form["layout"] . ".php")) {
+        $bigtree["layout"] = $form["layout"];
+    }
+}
+?>
+
 <link rel="stylesheet" href="<?=STATIC_ROOT?>extensions/com.fastspot.form-builder/css/front-end.css" />
 
 <?

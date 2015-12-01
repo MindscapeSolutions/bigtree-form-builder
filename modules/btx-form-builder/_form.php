@@ -38,6 +38,12 @@
             <label>Allow user to save progress and return <em>(You must have the bigtree-public-user extension installed for this to be of use.)</em></label>
         </div>
     </fieldset>
+    <fieldset>
+        <div id="form_builder_layout">
+            <label>Alternative layout to use when rendering this form</label>
+            <input type="text" name="layout" id="layout" value="<? if (!empty($form["layout"])) { echo $form["layout"]; } ?>" />
+        </div>
+    </fieldset>
 	<? if (!empty($settings["accept_payments"])) { ?>
 	<fieldset>
 		<div class="form_builder_triplets">
