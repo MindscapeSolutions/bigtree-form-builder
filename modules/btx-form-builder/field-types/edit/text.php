@@ -10,3 +10,6 @@
 	<label>Maximum Length <small>(leave empty or 0 for no max)</small></label>
 	<input type="text" name="maxlength" value="<?=intval($data["maxlength"])?>" />
 </fieldset>
+<fieldset>
+	<input type="checkbox" name="hidden" <? if ($data["hidden"] == "on") { ?>checked="checked" <? } ?> />
+	<label>Hidden Field</label>
