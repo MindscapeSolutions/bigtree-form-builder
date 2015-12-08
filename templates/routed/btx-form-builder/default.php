@@ -96,6 +96,14 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && !empty($_S
 		$last_field = false;
 		$count = 0;
 
+        $pageBreakCounter = 0;
+        $totalPageBreaks = 0;
+        foreach ($form["fields"] as $field) {
+            if ($field["type"] == "page-break") {
+                $totalPageBreaks++;
+            }
+        }
+
 		foreach ($form["fields"] as $field) {
 			$count++;
 			$t = $field["type"];
@@ -122,6 +130,22 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && !empty($_S
 				}
 
                 $fieldData = $storedEntry['data'][$field['id']];
+
+                $pageBreakMode = "";
+                if ($t == "page-break") {
+                    if ($pageBreakCounter == 0) {
+                        $pageBreakMode = "first";
+                    }
+                    else {
+                        // check if this is the last page-break
+                        if ($pageBreakCounter == $totalPageBreaks - 1) {
+                            $pageBreakMode = "last";
+                        }
+                    }
+
+                    $pageBreakCounter++;
+                }
+
 				include "field-types/draw/$t.php";
 			} else {
 				if ($last_field == "column") {
@@ -129,6 +153,7 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && !empty($_S
 				} else {
 					echo '<div class="form_builder_column">';
 				}
+
 				foreach ($field["fields"] as $subfield) {
 					$count++;
 					$d = json_decode($subfield["data"],true);
@@ -150,7 +175,9 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && !empty($_S
 					if (is_array($_SESSION["form_builder"]["errors"]) && in_array($field_name,$_SESSION["form_builder"]["errors"])) {
 						$error = true;
 					}
+
                     $fieldData = $storedEntry['data'][$field['id']];
+
 					include "field-types/draw/".$subfield["type"].".php";
 				}
 				echo '</div>';
