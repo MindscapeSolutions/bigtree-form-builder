@@ -176,7 +176,7 @@ if (!empty($publicUserExtension) && !empty($form["save_progress"]) && !empty($_S
 						$error = true;
 					}
 
-                    $fieldData = $storedEntry['data'][$field['id']];
+                    $fieldData = $storedEntry['data'][$subfield['id']];
 
 					include "field-types/draw/".$subfield["type"].".php";
 				}

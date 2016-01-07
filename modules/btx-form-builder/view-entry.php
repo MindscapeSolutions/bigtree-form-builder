@@ -11,7 +11,7 @@
 
 			if ($field["type"] == "column") {
 				_local_draw_form_builder_form_fields($field["fields"]);
-			} elseif ($field["type"] != "section") {
+			} elseif ($field["type"] != "section" && $field["type"] != "page-break") {
 				echo "<fieldset>";
 				echo "<label><strong>$label</strong></label>";
 				echo "<p>";
@@ -37,6 +37,14 @@
 				echo "</p>";
 				echo "</fieldset>";
 			}
+            else {
+                if ($field["type"] == "section") {
+                    echo "<p style=\"text-decoration: underline;\">Section: " . $field["data"]["title"] . "</p>";
+                }
+                else if ($field["type"] == "page-break") {
+                    echo "<p style=\"text-decoration: underline;\">Page: " . $field["data"]["title"] . "</p>";
+                }
+            }
 		}
 	}
 
