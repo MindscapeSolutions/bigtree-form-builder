@@ -151,7 +151,13 @@
                 }
 
                 $newData = json_encode($newData);
-                BigTreeAutoModule::updateItem("btx_form_builder_entries", $checkEntry['id'], array('data' => $newData));
+                
+                if ($_POST["formActionType"] == "submit") {
+                    BigTreeAutoModule::updateItem("btx_form_builder_entries", $checkEntry['id'], array('data' => $newData, 'marked_complete' => 'on'));
+                }
+                else {
+                    BigTreeAutoModule::updateItem("btx_form_builder_entries", $checkEntry['id'], array('data' => $newData));
+                }
             }
         }
         else {
