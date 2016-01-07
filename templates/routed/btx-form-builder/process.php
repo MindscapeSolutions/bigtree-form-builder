@@ -131,9 +131,22 @@
             else {
                 $newData = array();
                 foreach ($form['fields'] as $fCounter => $field) {
-                    $fData = json_decode($field['data']);
-                    if (isset($_POST[$fData->name])) {
-                        $newData[$fData->id] = $_POST[$fData->name];
+                    $t = $field["type"];
+                    if ($t != "column") {
+                        $fData = json_decode($field['data']);
+
+                        if (isset($_POST[$fData->name])) {
+                            $newData[$fData->id] = $_POST[$fData->name];
+                        }
+                    }
+                    else {
+                        foreach ($field["fields"] as $subfield) {
+                            $fData = json_decode($subfield['data']);
+
+                            if (isset($_POST[$fData->name])) {
+                                $newData[$fData->id] = $_POST[$fData->name];
+                            }
+                        }
                     }
                 }
 
